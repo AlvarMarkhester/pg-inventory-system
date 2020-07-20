@@ -15,8 +15,8 @@ class Game():
 		# start a new game
 		self.all_sprites = pg.sprite.Group()
 		self.all_coins = pg.sprite.Group()
-		self.player = Player(self, 15, 15)
-		self.coin = Coin(self, 5, 2)
+		self.player = Player(self, 15, 15, DEFUALT_HP, DEFUALT_PROT, DEFUALT_ATK)
+		self.coin = Coin(self, random.randrange(0, GRIDWIDTH), random.randrange(0, GRIDHEIGHT))
 		g.run()
 
 	def run(self):
@@ -51,7 +51,10 @@ class Game():
 					self.player.move(-1)
 				if event.key == pg.K_RIGHT or event.key == pg.K_d:
 					self.player.move(1)
-	
+
+	def new_coin(self):
+		self.coin.x = random.randrange(0, GRIDWIDTH)
+		self.coin.y = random.randrange(0, GRIDHEIGHT)
 	def draw_grid(self):
 		for x in range(0, WIDTH, TILESIZE):
 			pg.draw.line(self.screen, LIGHTGREY, (x, 0), (x, HEIGHT))
