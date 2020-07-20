@@ -85,7 +85,7 @@ class Coin(pg.sprite.Sprite):
 		self.groups = game.all_sprites, game.all_coins
 		pg.sprite.Sprite.__init__(self, self.groups)
 		self.game = game
-		self.image = pg.image.load('coin.png').convert_alpha()
+		self.image = pg.image.load('img/coin.png').convert_alpha()
 		self.rect = self.image.get_rect()
 		self.x = x
 		self.y = y

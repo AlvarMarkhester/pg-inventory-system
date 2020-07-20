@@ -4,25 +4,37 @@ import random
 import time
 
 class Inventory:
-	def __init__(self, totalSlots):
+	def __init__(self, totalSlots, cols, rows):
 		self.totalSlots = totalSlots
+		self.rows = rows
+		self.cols = cols
 		self.slots = []
 
 		while len(self.slots) != self.totalSlots:
-			for x in range(200, 200+INVTILESIZE*10, INVTILESIZE+2):
-				for y in range(200, 200+INVTILESIZE*2, INVTILESIZE+2):
-					self.slots.append(Slot(x, y))
+			for x in range(200, 200+INVTILESIZE * self.cols, INVTILESIZE+2):
+				for y in range(200, 200+INVTILESIZE * self.rows, INVTILESIZE+2):
+					self.slots.append(Slot(x, y, None))
 
 	def draw(self, screen):
 		for slot in self.slots:
 			slot.draw(screen)
 
+	def addItem(self, item):
+		for slot in self.slots:
+			if slot.item == None:
+				slot.item = item
+				break
+			
 class Slot:
-	def __init__(self, x, y):
+	def __init__(self, x, y, item):
 		self.x = x
 		self.y = y
+		self.item = item
 	def draw(self, screen):
 		pg.draw.rect(screen, WHITE, (self.x, self.y, INVTILESIZE, INVTILESIZE))
+		if self.item != None:
+			self.image = pg.image.load(self.item.img).convert_alpha()
+			screen.blit(self.image, (self.x, self.y))
 
 class InventoryItem:
 	def __init__(self, img, value):
@@ -30,7 +42,7 @@ class InventoryItem:
 		self.value = value
 
 class Consumable(InventoryItem):
-	def __init__(self, img, value, hp_gain, prot_gain):
+	def __init__(self, img, value, hp_gain=0, prot_gain=0):
 		InventoryItem.__init__(self, img, value)
 		self.hp_gain = hp_gain
 		self.prot_gain = prot_gain
@@ -55,9 +67,8 @@ class Equipable(InventoryItem):
 			self.equipped_to = None
 
 class Armor(Equipable):
-	def __init__(self, img, value, armor, prot, slot):
+	def __init__(self, img, value, prot, slot):
 		Equipable.__init__(self, img, value)
-		self.armor = armor
 		self.prot = prot
 		self.slot = slot
 

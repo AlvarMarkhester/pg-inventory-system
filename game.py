@@ -18,7 +18,19 @@ class Game():
 		self.all_coins = pg.sprite.Group()
 		self.player = Player(self, 15, 15, DEFUALT_HP, DEFUALT_PROT, DEFUALT_ATK)
 		self.coin = Coin(self, random.randrange(0, GRIDWIDTH), random.randrange(0, GRIDHEIGHT))
-		self.inventory = Inventory(20)
+		self.inventory = Inventory(10, 5, 2)
+		sword_item = Weapon('img/sword.png', 10, 10, 'sword')
+		hp_potion = Consumable('img/potionRed.png', 2, 30)
+		helmet_armor = Armor('img/helmet.png', 10, 20, 'head')
+		chest_armor = Armor('img/chest.png', 10, 40, 'chest')
+		self.inventory.addItem(sword_item)
+		self.inventory.addItem(helmet_armor)
+		self.inventory.addItem(chest_armor)
+		self.inventory.addItem(hp_potion)
+		self.inventory.addItem(sword_item)
+		self.inventory.addItem(helmet_armor)
+		self.inventory.addItem(chest_armor)
+		self.inventory.addItem(hp_potion)
 		g.run()
 
 	def run(self):
@@ -37,6 +49,7 @@ class Game():
 		self.all_sprites.update()
 		self.player.update()
 		self.all_coins.update()
+		
 
 	def events(self):
 		# game loop events
