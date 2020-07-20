@@ -3,6 +3,7 @@ import sys
 import random
 from settings import *
 from sprites import *
+from inventory import *
 
 class Game():
 	def __init__(self):
@@ -17,6 +18,7 @@ class Game():
 		self.all_coins = pg.sprite.Group()
 		self.player = Player(self, 15, 15, DEFUALT_HP, DEFUALT_PROT, DEFUALT_ATK)
 		self.coin = Coin(self, random.randrange(0, GRIDWIDTH), random.randrange(0, GRIDHEIGHT))
+		self.inventory = Inventory(20)
 		g.run()
 
 	def run(self):
@@ -55,6 +57,7 @@ class Game():
 	def new_coin(self):
 		self.coin.x = random.randrange(0, GRIDWIDTH)
 		self.coin.y = random.randrange(0, GRIDHEIGHT)
+
 	def draw_grid(self):
 		for x in range(0, WIDTH, TILESIZE):
 			pg.draw.line(self.screen, LIGHTGREY, (x, 0), (x, HEIGHT))
@@ -66,6 +69,7 @@ class Game():
 		self.screen.fill(BGCOLOR)
 		self.draw_grid()
 		self.all_sprites.draw(self.screen)
+		self.inventory.draw(self.screen)
 		# flipping display after drawing
 		pg.display.flip()
 

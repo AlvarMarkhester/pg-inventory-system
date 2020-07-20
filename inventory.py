@@ -6,12 +6,23 @@ import time
 class Inventory:
 	def __init__(self, totalSlots):
 		self.totalSlots = totalSlots
-		self.availableSlots = self.totalSlots
-		self.unavailableSlots = 0
-		self.items = []
-		
-	def remove(self, InventoryItem):
-		pass
+		self.slots = []
+
+		while len(self.slots) != self.totalSlots:
+			for x in range(200, 200+INVTILESIZE*10, INVTILESIZE+2):
+				for y in range(200, 200+INVTILESIZE*2, INVTILESIZE+2):
+					self.slots.append(Slot(x, y))
+
+	def draw(self, screen):
+		for slot in self.slots:
+			slot.draw(screen)
+
+class Slot:
+	def __init__(self, x, y):
+		self.x = x
+		self.y = y
+	def draw(self, screen):
+		pg.draw.rect(screen, WHITE, (self.x, self.y, INVTILESIZE, INVTILESIZE))
 
 class InventoryItem:
 	def __init__(self, img, value):
@@ -43,7 +54,7 @@ class Equipable(InventoryItem):
 			self.is_equipped = False
 			self.equipped_to = None
 
-class Armor(Equipable)
+class Armor(Equipable):
 	def __init__(self, img, value, armor, prot, slot):
 		Equipable.__init__(self, img, value)
 		self.armor = armor
