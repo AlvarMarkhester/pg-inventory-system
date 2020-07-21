@@ -28,9 +28,10 @@ class Player(pg.sprite.Sprite):
 		
 
 	def move(self, dx=0, dy=0):
-		self.x += dx
-		self.y += dy
-		self.check_collision()
+		if self.game.inventory.displayInventory != True:
+			self.x += dx
+			self.y += dy
+			self.check_collision()
 
 	def addHp(self, hp_gain):
 		self.hp += hp_gain

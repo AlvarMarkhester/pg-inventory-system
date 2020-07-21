@@ -43,7 +43,6 @@ class Game():
 
 	def quit(self):
 		sys.exit()
-
 	def update(self):
 		# game loop update
 		self.all_sprites.update()
@@ -66,6 +65,8 @@ class Game():
 					self.player.move(-1)
 				if event.key == pg.K_RIGHT or event.key == pg.K_d:
 					self.player.move(1)
+				if event.key == pg.K_b:
+					self.inventory.toggleInventory()
 
 	def new_coin(self):
 		self.coin.x = random.randrange(0, GRIDWIDTH)

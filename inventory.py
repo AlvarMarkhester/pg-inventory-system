@@ -9,15 +9,23 @@ class Inventory:
 		self.rows = rows
 		self.cols = cols
 		self.slots = []
+		self.displayInventory = False
 
 		while len(self.slots) != self.totalSlots:
-			for x in range(200, 200+INVTILESIZE * self.cols, INVTILESIZE+2):
-				for y in range(200, 200+INVTILESIZE * self.rows, INVTILESIZE+2):
+			for x in range(WIDTH//2 - ((INVTILESIZE+2) * self.cols)//2, WIDTH//2 + ((INVTILESIZE+2) * self.cols) //2, INVTILESIZE+2):
+				for y in range(650, 650+INVTILESIZE * self.rows, INVTILESIZE+2):
 					self.slots.append(Slot(x, y, None))
 
 	def draw(self, screen):
-		for slot in self.slots:
-			slot.draw(screen)
+		if self.displayInventory == True:
+			for slot in self.slots:
+				slot.draw(screen)
+
+	def toggleInventory(self):
+		if self.displayInventory == False:
+			self.displayInventory = True
+		elif self.displayInventory == True:
+			self.displayInventory = False
 
 	def addItem(self, item):
 		for slot in self.slots:
@@ -34,7 +42,7 @@ class Slot:
 		pg.draw.rect(screen, WHITE, (self.x, self.y, INVTILESIZE, INVTILESIZE))
 		if self.item != None:
 			self.image = pg.image.load(self.item.img).convert_alpha()
-			screen.blit(self.image, (self.x, self.y))
+			screen.blit(self.image, (self.x-7, self.y-7))
 
 class InventoryItem:
 	def __init__(self, img, value):
