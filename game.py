@@ -8,6 +8,8 @@ from inventory import *
 class Game():
 	def __init__(self):
 		pg.init()
+		pg.font.init()
+		self.myfont = pg.font.SysFont('Calibri', 25)
 		self.screen = pg.display.set_mode((WIDTH, HEIGHT))
 		pg.display.set_caption(TITLE)
 		self.clock = pg.time.Clock()
@@ -18,17 +20,15 @@ class Game():
 		self.all_coins = pg.sprite.Group()
 		self.player = Player(self, 15, 15, DEFUALT_HP, DEFUALT_PROT, DEFUALT_ATK)
 		self.coin = Coin(self, random.randrange(0, GRIDWIDTH), random.randrange(0, GRIDHEIGHT))
-		self.inventory = Inventory(10, 5, 2)
+		self.inventory = Inventory(self.player, 10, 5, 2)
 		sword_item = Weapon('img/sword.png', 10, 10, 'weapon', 'sword')
 		hp_potion = Consumable('img/potionRed.png', 2, 30)
 		helmet_armor = Armor('img/helmet.png', 10, 20, 'head')
 		chest_armor = Armor('img/chest.png', 10, 40, 'chest')
-		self.inventory.addItemInv(sword_item)
 		self.inventory.addItemInv(helmet_armor)
-		self.inventory.addItemInv(chest_armor)
 		self.inventory.addItemInv(hp_potion)
-		self.inventory.equipItem(helmet_armor)
-		self.inventory.equipItem(sword_item)
+		self.inventory.addItemInv(sword_item)
+		self.inventory.addItemInv(chest_armor)
 		g.run()
 
 	def run(self):
@@ -65,6 +65,9 @@ class Game():
 					self.player.move(1)
 				if event.key == pg.K_b:
 					self.inventory.toggleInventory()
+			if event.type == pg.MOUSEBUTTONDOWN and event.button == 3:
+				mouse_pos = pg.mouse.get_pos()
+				self.inventory.checkSlot(self.screen, mouse_pos)
 
 	def new_coin(self):
 		self.coin.x = random.randrange(0, GRIDWIDTH)
@@ -76,12 +79,24 @@ class Game():
 		for y in range(0, HEIGHT, TILESIZE):
 			pg.draw.line(self.screen, LIGHTGREY, (0, y), (WIDTH, y))
 
+	def draw_player_stats(self):
+		self.hp = self.myfont.render(f"Health: {self.player.hp}" , False, YELLOW)
+		self.prot = self.myfont.render(f"Protection: {self.player.prot}" , False, YELLOW)
+		self.atk = self.myfont.render(f"Attack: {self.player.atk}" , False, YELLOW)
+		self.coins = self.myfont.render(f"Coins: {self.player.p_coins}" , False, YELLOW)
+		self.screen.blit(self.hp,(50,25))
+		self.screen.blit(self.prot,(50,50))
+		self.screen.blit(self.atk,(50,75))
+		self.screen.blit(self.coins,(50,100))
+
+
 	def draw(self):
 		# game loop draw
 		self.screen.fill(BGCOLOR)
 		self.draw_grid()
 		self.all_sprites.draw(self.screen)
 		self.inventory.draw(self.screen)
+		self.draw_player_stats()
 		# flipping display after drawing
 		pg.display.flip()
 

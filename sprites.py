@@ -43,24 +43,24 @@ class Player(pg.sprite.Sprite):
 		if self.prot > self.prot_max:
 			self.prot = self.prot_max
 
-	def equip_armor(armor, slot):
-		if self.armor[slot] != None:
-			self.unequip_armor(slot)
-		self.armor[slot] = armor
-		self.prot += armor.prot
+	def equip_armor(self, item):
+		if self.armor[item.slot] != None:
+			self.unequip_armor(item.slot)
+		self.armor[item.slot] = item
+		self.prot += item.prot
 
-	def unequip_armor(slot):
+	def unequip_armor(self, slot):
 		if self.armor[slot] != None:
 			self.prot -= self.armor[slot].prot
 			self.armor[slot] = None
 
-	def equip_weapon(weapon):
+	def equip_weapon(self, weapon):
 		if self.weapon != None:
 			self.unequip_weapon()
 		self.weapon = weapon
 		self.atk += weapon.atk
 
-	def unequip_weapon():
+	def unequip_weapon(self):
 		if self.weapon != None:
 			self.atk -= self.weapon.atk
 			self.weapon = None
