@@ -154,16 +154,8 @@ class Consumable(InventoryItem):
 class Equipable(InventoryItem):
 	def __init__(self, img, value):
 		InventoryItem.__init__(self, img, value)
-		self.is_equipped = False
-		self.equipped_to = None
-
-		def equip(self, target):
-			self.is_equipped = True
-			self.equipped_to = target
-
-		def unequip(self):
-			self.is_equipped = False
-			self.equipped_to = None
+		
+		#TODO MOVE EQUIP AND UNEQUIP FUNCTIONS HERE LATER
 
 class Armor(Equipable):
 	def __init__(self, img, value, prot, slot):
@@ -171,25 +163,9 @@ class Armor(Equipable):
 		self.prot = prot
 		self.slot = slot
 
-	def equip(self, target):
-		Equipable.equip(self, target)
-		target.equip_armor(self, self.slot)
-
-	def unequip(self):
-		self.equipped_to.unequip_armor(self.slot)
-		Equipable.unequip(self)
-
 class Weapon(Equipable):
 	def __init__(self, img, value, atk, slot, wpn_type):
 		Equipable.__init__(self, img, value)
 		self.atk = atk
 		self.slot = slot
 		self.wpn_type = wpn_type
-
-	def equip(self, target):
-		Equipable.equip(self, target)
-		target.equip_weapon(self)
-
-	def unequip(self):
-		self.equipped_to.unequip_weapon()
-		Equipable.unequip(self)

@@ -10,7 +10,7 @@ LIGHTGREY = (100, 100, 100)
 YELLOW = (255, 255, 0)
 
 #game settings/options
-TITLE = "Tile based game"
+TITLE = "Inventory System Test"
 WIDTH = 800
 HEIGHT = 800
 FPS = 60
