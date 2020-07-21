@@ -28,7 +28,7 @@ class Player(pg.sprite.Sprite):
 		
 
 	def move(self, dx=0, dy=0):
-		if self.game.inventory.displayInventory != True:
+		if self.game.inventory.display_inventory != True:
 			self.x += dx
 			self.y += dy
 			self.check_collision()

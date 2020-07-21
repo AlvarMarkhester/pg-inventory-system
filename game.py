@@ -19,7 +19,7 @@ class Game():
 		self.player = Player(self, 15, 15, DEFUALT_HP, DEFUALT_PROT, DEFUALT_ATK)
 		self.coin = Coin(self, random.randrange(0, GRIDWIDTH), random.randrange(0, GRIDHEIGHT))
 		self.inventory = Inventory(10, 5, 2)
-		sword_item = Weapon('img/sword.png', 10, 10, 'sword')
+		sword_item = Weapon('img/sword.png', 10, 10, 'weapon', 'sword')
 		hp_potion = Consumable('img/potionRed.png', 2, 30)
 		helmet_armor = Armor('img/helmet.png', 10, 20, 'head')
 		chest_armor = Armor('img/chest.png', 10, 40, 'chest')
