@@ -56,17 +56,46 @@ class Inventory:
 		elif self.display_inventory == True:
 			self.display_inventory = False
 
-	def addItem(self, item):
+	def addItemInv(self, item):
 		for slot in self.inventory_slots:
 			if slot.item == None:
 				slot.item = item
 				break
-	def removeItem(self, item):
+	def removeItemInv(self, item):
 		for slot in self.inventory_slots:
 			if slot.item == item:
 				slot.item = None
 				break
-			
+
+	def equipItem(self, item):
+		if isinstance(item, Armor):
+			for armorslot in self.armor_slots:
+				if armorslot.item != None and armorslot.slottype == item.slot:
+					self.unequip(armorslot.item)
+					self.removeItemInv(item)
+				if armorslot.slottype == item.slot:
+					armorslot.item = item
+				break
+
+		if isinstance(item, Weapon):
+			if self.weapon_slots[0].item != None:
+				self.unequip(self.weapon_slots[0].item)
+			if self.weapon_slots[0].slottype == item.slot:
+				self.weapon_slots[0].item = item
+
+	def unequipItem(self, item):
+			if isinstance(item, Armor):
+				for armorslot in self.armor_slots:
+					if armorslot.item == item:
+						self.addItemInv(item)
+						armorslot.item = None
+						break
+
+			if isinstance(item, Weapon):
+				if self.weapon_slots[0].item == item:
+					self.addItemInv(item)
+					self.weapon_slots[0].item = None
+
 class InventorySlot:
 	def __init__(self, x, y, item=None):
 		self.x = x
@@ -86,6 +115,9 @@ class EquipableSlot:
 		self.item = item
 	def draw(self, screen):
 		pg.draw.rect(screen, WHITE, (self.x, self.y, INVTILESIZE, INVTILESIZE))
+		if self.item != None:
+			self.image = pg.image.load(self.item.img).convert_alpha()
+			screen.blit(self.image, (self.x-7, self.y-7))
 
 class InventoryItem:
 	def __init__(self, img, value):
@@ -135,6 +167,7 @@ class Weapon(Equipable):
 	def __init__(self, img, value, atk, slot, wpn_type):
 		Equipable.__init__(self, img, value)
 		self.atk = atk
+		self.slot = slot
 		self.wpn_type = wpn_type
 
 	def equip(self, target):
