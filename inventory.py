@@ -78,7 +78,7 @@ class Inventory:
 		if isinstance(item, Armor):
 			for armorslot in self.armor_slots:
 				if armorslot.item != None and armorslot.slottype == item.slot:
-					self.unequip(armorslot.item)
+					self.unequipItem(armorslot.item)
 				if armorslot.slottype == item.slot:
 					armorslot.item = item
 					self.player.equip_armor(item)
@@ -86,7 +86,7 @@ class Inventory:
 
 		if isinstance(item, Weapon):
 			if self.weapon_slots[0].item != None:
-				self.unequip(self.weapon_slots[0].item)
+				self.unequipItem(self.weapon_slots[0].item)
 			if self.weapon_slots[0].slottype == item.slot:
 				self.weapon_slots[0].item = item
 				self.player.equip_weapon(item)
