@@ -90,10 +90,10 @@ class Inventory:
 		item.unequip(self)
 
 class InventorySlot:
-	def __init__(self, x, y, item=None):
+	def __init__(self, x, y):
 		self.x = x
 		self.y = y
-		self.item = item
+		self.item = None
 
 	def draw(self, screen):
 		return pg.draw.rect(screen, WHITE, (self.x, self.y, INVTILESIZE, INVTILESIZE))
@@ -103,20 +103,11 @@ class InventorySlot:
 			self.image = pg.image.load(self.item.img).convert_alpha()
 			screen.blit(self.image, (self.x-7, self.y-7))
 
-class EquipableSlot:
-	def __init__(self, x, y, slottype=None, item=None):
-		self.x = x
-		self.y = y
+class EquipableSlot(InventorySlot):
+	def __init__(self, x, y, slottype=None):
+		InventorySlot.__init__(self, x, y)
 		self.slottype = slottype
-		self.item = item
-	def draw(self, screen):
-		return pg.draw.rect(screen, WHITE, (self.x, self.y, INVTILESIZE, INVTILESIZE))
-	
-	def drawItems(self, screen):
-		if self.item != None:
-			self.image = pg.image.load(self.item.img).convert_alpha()
-			screen.blit(self.image, (self.x-7, self.y-7))
-
+		
 class InventoryItem:
 	def __init__(self, img, value):
 		self.img = img

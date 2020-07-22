@@ -52,7 +52,6 @@ class Game():
 		self.all_sprites.update()
 		self.player.update()
 		self.all_coins.update()
-		
 
 	def events(self):
 		# game loop events
@@ -102,7 +101,6 @@ class Game():
 		self.screen.blit(self.protimg,(STATPOSX-50,55))
 		self.screen.blit(self.atkimg,(STATPOSX-50,105))
 		self.screen.blit(self.coinimg,(STATPOSX-55,155))
-
 
 	def draw(self):
 		# game loop draw
