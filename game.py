@@ -86,14 +86,22 @@ class Game():
 			pg.draw.line(self.screen, LIGHTGREY, (0, y), (WIDTH, y))
 
 	def draw_player_stats(self):
-		self.hp = self.myfont.render(f"Health: {self.player.hp}" , False, YELLOW)
-		self.prot = self.myfont.render(f"Protection: {self.player.prot}" , False, YELLOW)
-		self.atk = self.myfont.render(f"Attack: {self.player.atk}" , False, YELLOW)
-		self.coins = self.myfont.render(f"Coins: {self.player.p_coins}" , False, YELLOW)
-		self.screen.blit(self.hp,(50,25))
-		self.screen.blit(self.prot,(50,50))
-		self.screen.blit(self.atk,(50,75))
-		self.screen.blit(self.coins,(50,100))
+		self.hp = self.myfont.render(f"{self.player.hp}" , False, RED)
+		self.prot = self.myfont.render(f"{self.player.prot}" , False, WHITE)
+		self.atk = self.myfont.render(f"{self.player.atk}" , False, WHITE)
+		self.coins = self.myfont.render(f"{self.player.p_coins}" , False, GOLD)
+		self.hpimg = pg.image.load('img/heart.png').convert_alpha()
+		self.protimg = pg.image.load('img/upg_shieldSmall.png').convert_alpha()
+		self.atkimg = pg.image.load('img/upg_dagger.png').convert_alpha()
+		self.coinimg = pg.image.load('img/coin1.png').convert_alpha()
+		self.screen.blit(self.hp,(STATPOSX,25))
+		self.screen.blit(self.prot,(STATPOSX,75))
+		self.screen.blit(self.atk,(STATPOSX,125))
+		self.screen.blit(self.coins,(STATPOSX,175))
+		self.screen.blit(self.hpimg,(STATPOSX-50,5))
+		self.screen.blit(self.protimg,(STATPOSX-50,55))
+		self.screen.blit(self.atkimg,(STATPOSX-50,105))
+		self.screen.blit(self.coinimg,(STATPOSX-55,155))
 
 
 	def draw(self):

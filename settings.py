@@ -8,6 +8,7 @@ BLUE = (0, 0, 255)
 DARKGREY = (40, 40, 40)
 LIGHTGREY = (100, 100, 100)
 YELLOW = (255, 255, 0)
+GOLD = (255,215,0)
 
 #game settings/options
 TITLE = "Inventory System Test"
@@ -21,6 +22,7 @@ DEFUALT_HP = 100
 DEFUALT_PROT = 100
 DEFUALT_ATK = 10
 
+STATPOSX = 50
 TILESIZE = 32
 UIHEIGTH = 300
 INVTILESIZE = 48
