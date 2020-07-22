@@ -49,10 +49,7 @@ class Inventory:
 				wepslot.drawItems(screen)
 
 	def toggleInventory(self):
-		if self.display_inventory == False:
-			self.display_inventory = True
-		elif self.display_inventory == True:
-			self.display_inventory = False
+		self.display_inventory = not self.display_inventory
 
 	def addItemInv(self, item):
 		for slot in self.inventory_slots:
