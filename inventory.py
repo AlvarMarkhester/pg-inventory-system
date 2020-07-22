@@ -75,7 +75,8 @@ class Inventory:
 						self.useItem(slot.item)
 			if isinstance(slot, EquipableSlot):
 				if slot.draw(screen).collidepoint(mousepos):
-					self.unequipItem(slot.item)
+					if slot.item != None:
+						self.unequipItem(slot.item)
 
 	def getEquipSlot(self, item):
 		for slot in self.armor_slots + self.weapon_slots:
