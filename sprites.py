@@ -20,7 +20,6 @@ class Player(pg.sprite.Sprite):
 		self.hp = hp
 		self.prot = prot
 		self.hp_max = hp
-		self.prot_max = prot
 		self.atk = atk
 		self.armor = {'head': None, 'chest': None, 'legs': None, 'feet': None}
 		self.weapon = None
@@ -40,8 +39,6 @@ class Player(pg.sprite.Sprite):
 
 	def addProt(self, prot_gain):
 		self.prot += prot_gain
-		if self.prot > self.prot_max:
-			self.prot = self.prot_max
 
 	def equip_armor(self, item):
 		if self.armor[item.slot] != None:

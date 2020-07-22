@@ -69,43 +69,27 @@ class Inventory:
 		for slot in self.inventory_slots + self.armor_slots + self.weapon_slots:
 			if isinstance(slot, InventorySlot):
 				if slot.draw(screen).collidepoint(mousepos):
-					self.equipItem(slot.item)
+					if isinstance(slot.item, Equipable):
+						self.equipItem(slot.item)
+					if isinstance(slot.item, Consumable):
+						self.useItem(slot.item)
 			if isinstance(slot, EquipableSlot):
 				if slot.draw(screen).collidepoint(mousepos):
 					self.unequipItem(slot.item)
 
-	def equipItem(self, item):
-		if isinstance(item, Armor):
-			for armorslot in self.armor_slots:
-				if armorslot.item != None and armorslot.slottype == item.slot:
-					self.unequipItem(armorslot.item)
-				if armorslot.slottype == item.slot:
-					armorslot.item = item
-					self.player.equip_armor(item)
-					self.removeItemInv(item)
+	def getEquipSlot(self, item):
+		for slot in self.armor_slots + self.weapon_slots:
+			if slot.slottype == item.slot:
+				return slot
 
-		if isinstance(item, Weapon):
-			if self.weapon_slots[0].item != None:
-				self.unequipItem(self.weapon_slots[0].item)
-			if self.weapon_slots[0].slottype == item.slot:
-				self.weapon_slots[0].item = item
-				self.player.equip_weapon(item)
-				self.removeItemInv(item)
+	def useItem(self, item):
+		item.use(self, self.player)
+
+	def equipItem(self, item):
+		item.equip(self, self.player)
 
 	def unequipItem(self, item):
-			if isinstance(item, Armor):
-				for armorslot in self.armor_slots:
-					if armorslot.item == item:
-						self.addItemInv(item)
-						self.player.unequip_armor(item.slot)
-						armorslot.item = None
-						break
-
-			if isinstance(item, Weapon):
-				if self.weapon_slots[0].item == item:
-					self.addItemInv(item)
-					self.player.unequip_weapon()
-					self.weapon_slots[0].item = None
+		item.unequip(self)
 
 class InventorySlot:
 	def __init__(self, x, y, item=None):
@@ -146,16 +130,24 @@ class Consumable(InventoryItem):
 		self.hp_gain = hp_gain
 		self.prot_gain = prot_gain
 
-	def use(self, target):
-		Inventory.remove(self)
+	def use(self, inv, target):
+		inv.removeItemInv(self)
 		target.addHp(self.hp_gain)
-		target.addDef(self.prot_gain)
+		target.addProt(self.prot_gain)
 
 class Equipable(InventoryItem):
 	def __init__(self, img, value):
 		InventoryItem.__init__(self, img, value)
-		
-		#TODO MOVE EQUIP AND UNEQUIP FUNCTIONS HERE LATER
+		self.is_equipped = False
+		self.equipped_to = None
+
+	def equip(self, target):
+		self.is_equipped = True
+		self.equipped_to = target
+
+	def unequip(self):
+		self.is_equipped = False
+		self.equipped_to = None
 
 class Armor(Equipable):
 	def __init__(self, img, value, prot, slot):
@@ -163,9 +155,37 @@ class Armor(Equipable):
 		self.prot = prot
 		self.slot = slot
 
+	def equip(self, inv, target):
+		if inv.getEquipSlot(self).item != None:
+			inv.getEquipSlot(self).item.unequip(inv)
+		Equipable.equip(self, target)
+		target.equip_armor(self)
+		inv.removeItemInv(self)
+		inv.getEquipSlot(self).item = self
+
+	def unequip(self, inv):
+		self.equipped_to.unequip_armor(self.slot)
+		Equipable.unequip(self)
+		inv.addItemInv(self)
+		inv.getEquipSlot(self).item = None
+
 class Weapon(Equipable):
 	def __init__(self, img, value, atk, slot, wpn_type):
 		Equipable.__init__(self, img, value)
 		self.atk = atk
 		self.slot = slot
 		self.wpn_type = wpn_type
+
+	def equip(self, inv, target):
+		if inv.getEquipSlot(self).item != None:
+			inv.getEquipSlot(self).item.unequip(inv)
+		Equipable.equip(self, target)
+		target.equip_weapon(self)
+		inv.removeItemInv(self)
+		inv.getEquipSlot(self).item = self
+
+	def unequip(self, inv):
+		self.equipped_to.unequip_weapon()
+		Equipable.unequip(self)
+		inv.addItemInv(self)
+		inv.getEquipSlot(self).item = None
