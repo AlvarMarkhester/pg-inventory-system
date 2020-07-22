@@ -71,8 +71,15 @@ class Game():
 				if event.key == pg.K_b:
 					self.inventory.toggleInventory()
 			if event.type == pg.MOUSEBUTTONDOWN and event.button == 3:
-				mouse_pos = pg.mouse.get_pos()
-				self.inventory.checkSlot(self.screen, mouse_pos)
+				if self.inventory.display_inventory:
+					mouse_pos = pg.mouse.get_pos()
+					self.inventory.checkSlot(self.screen, mouse_pos)
+			if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:
+				if self.inventory.display_inventory:
+					self.inventory.moveItem(self.screen)
+			if event.type == pg.MOUSEBUTTONUP and event.button == 1:
+				if self.inventory.display_inventory:
+					self.inventory.placeItem(self.screen)
 
 	def new_coin(self):
 		self.coin.x = random.randrange(0, GRIDWIDTH)
