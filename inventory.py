@@ -43,6 +43,7 @@ class Inventory:
 		if self.display_inventory:
 			for slot in self.armor_slots + self.inventory_slots + self.weapon_slots:
 				slot.draw(screen)
+			for slot in self.armor_slots + self.inventory_slots + self.weapon_slots:
 				slot.drawItems(screen)
 
 	def toggleInventory(self):
